@@ -1,0 +1,92 @@
+<?php
+include "database_connection.php";
+
+global $connect;
+$message = '';
+
+if (isset($_POST['login_button']))
+{
+    $formData = array();
+    if (empty($_POST['admin_email']))
+    {
+        $message .= "<li>Email Address is required</li>";
+    }
+    else {
+        if (!filter_var($_POST['admin_email'], FILTER_VALIDATE_EMAIL))
+        {
+            $message .= "<li>Invalid Email Address</li>";
+        }
+        else {
+            $formData['admin_email'] = $_POST['admin_email'];
+        }
+    }
+
+    if (empty($_POST['admin_password']))
+    {
+        $message .= "<li>Password is required</li>";
+    }
+    else {
+        $formData['admin_password'] = $_POST['admin_password'];
+    }
+
+    if ($message == '')
+    {
+        $data = array(
+            ':admin_email' => $formData['admin_email']
+        );
+        $query = "SELECT * FROM lms_admin WHERE admin_email = :admin_email";
+        $statement = $connect->prepare($query);
+        $statement->execute($data);
+
+        if ($statement->rowCount() > 0)
+        {
+            foreach ($statement->fetchAll() as $row)
+            {
+                if ($row['admin_password'] == $formData['admin_password'])
+                {
+                    $_SESSION['admin_id'] = $row['admin_id'];
+                    header('Location: admin/index.php');
+                }
+                else {
+                    $message .= "<li>Wrong Password</li>";
+                }
+            }
+        }
+        else {
+            $message .= "<li>Wrong Email Address";
+        }
+    }
+}
+include "header.php";
+?>
+
+<div class="d-flex align-items-center justify-content-center" style="min-height: 700px;">
+    <div class="col-md-6">
+        <?php
+            if ($message != '')
+            {
+                echo "<div class='alert alert-danger'>$message</div>";
+            }
+        ?>
+        <div class="card">
+            <div class="card-header">Admin Login</div>
+            <div class="card-body">
+                <form action="" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="text" name="admin_email" id="admin_email" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="label-form">Password</div>
+                        <input type="password" name="admin_password" id="admin_password" class="form-control">
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-center mt-4 mb-0">
+                        <input type="submit" name="login_button" class="btn btn-primary" value="Login">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
