@@ -1,5 +1,9 @@
 <?php
-include "functions.php";
+
+//header.php
+
+include 'functions.php';
+
 ?>
 
 <!doctype html>
@@ -13,13 +17,13 @@ include "functions.php";
         <title>Online Library Management System in PHP</title>
         <link rel="canonical" href="">
         <!-- Bootstrap core CSS -->
-        <link href="<?=baseUrl()?>asset/css/simple-datatables-style.css" rel="stylesheet" />
-        <link href="<?=baseUrl()?>asset/css/styles.css" rel="stylesheet" />
-        <script src="<?=baseUrl()?>asset/js/font-awesome-5-all.min.js" crossorigin="anonymous"></script>
-        <script src="<?=baseUrl()?>asset/js/scripts.js"></script>
-        <script src="<?=baseUrl()?>asset/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="<?=baseUrl()?>asset/js/datatables-simple-demo.js"></script>
-        <script src="<?=baseUrl()?>asset/js/simple-datatables@latest.js" crossorigin="anonymous"></script>
+        <link href="<?= base_url(); ?>asset/css/simple-datatables-style.css" rel="stylesheet" />
+        <link href="<?= base_url(); ?>asset/css/styles.css" rel="stylesheet" />
+        <script src="<?= base_url(); ?>asset/js/font-awesome-5-all.min.js" crossorigin="anonymous"></script>
+        <script src="<?= base_url(); ?>asset/js/scripts.js"></script>
+        <script src="<?= base_url(); ?>asset/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="<?= base_url(); ?>asset/js/datatables-simple-demo.js"></script>
+        <script src="<?= base_url(); ?>asset/js/simple-datatables@latest.js" crossorigin="anonymous"></script>
         <!-- Favicons -->
         <link rel="apple-touch-icon" href="" sizes="180x180">
         <link rel="icon" href="" sizes="32x32" type="image/png">
@@ -44,7 +48,7 @@ include "functions.php";
         </style>
     </head>
 
-    <?php if (is_admin_login()): ?>
+    <?php if(is_admin_login()): ?>
 
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -80,6 +84,7 @@ include "functions.php";
                             <a class="nav-link" href="user.php">User</a>
                             <a class="nav-link" href="issue_book.php">Issue Book</a>
                             <a class="nav-link" href="logout.php">Logout</a>
+
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -96,8 +101,9 @@ include "functions.php";
         <main>
             <div class="container py-4">
                 <header class="pb-3 mb-4 border-bottom">
-                    <a href="<?=baseUrl()?>" class="d-flex align-items-center text-dark text-decoration-none">
+                    <a href="index.php" class="d-flex align-items-center text-dark text-decoration-none">
                         <span class="fs-4">Library Management System</span>
                     </a>
                 </header>
+
     <?php endif; ?>

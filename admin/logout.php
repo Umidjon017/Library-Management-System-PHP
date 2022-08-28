@@ -1,7 +1,8 @@
 <?php
+// Logout.php
 
 session_start();
-session_destroy();
-header('Location: ../admin_login.php');
 
-?>
+session_destroy();
+
+header('location: ../admin_login.php');

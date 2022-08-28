@@ -47,19 +47,16 @@ if (isset($_POST['edit_admin']))
         $query = "
             UPDATE lms_admin
                 SET admin_email = :admin_email,
-                admin_password = :admin_password
+                    admin_password = :admin_password
                 WHERE admin_id = :admin_id
         ";
         $statement = $connect->prepare($query);
         $statement->execute($data);
-        $message = "Data successfully saved!";
+        $message .= "Data successfully saved!";
     }
 }
 
-$query = "
-    SELECT * FROM lms_admin
-    WHERE admin_id = '".$_SESSION['admin_id']."'
-";
+$query = "SELECT * FROM lms_admin WHERE admin_id = '".$_SESSION['admin_id']."'";
 $result = $connect->query($query);
 
 $message1 = '';
@@ -107,7 +104,7 @@ if (isset($_POST['check_admin']))
                     ?>
 
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Edit Profile</h1>
+                        <h1 class="mt-4">Edit Your Profile Details</h1>
                         <ol class="breadcrumb mt-4 mb-4 bg-light p-2 border rounded">
                             <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
                             <li class="breadcrumb-item active"><a href="profile.php">Profile</a></li>
@@ -116,23 +113,23 @@ if (isset($_POST['check_admin']))
                             <div class="col-md-6">
                                 <div class="card mb-4">
                                     <div class="card-header">
-                                        <i class="fa fa-user-edit"></i> Edit profile details
+                                        <i class="fa fa-user-edit"></i> Edit your profile details
                                     </div>
                                     <div class="card-body">
                                         <?php foreach ($result as $row): ?>
-                                            <form action="" method="post">
-                                                <div class="mb-3">
-                                                    <label class="label-form">Email address</label>
-                                                    <input type="text" name="admin_email" id="admin_email" class="form-control" value="<?=$row['admin_email']?>">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="label-form">Password</label>
-                                                    <input type="text" name="admin_password" id="admin_password" class="form-control" value="<?=$row['admin_password']?>">
-                                                </div>
-                                                <div class=" mt-4 mb-0">
-                                                    <input type="submit" name="edit_admin" class="btn btn-primary" value="Edit">
-                                                </div>
-                                            </form>
+                                        <form action="" method="post">
+                                            <div class="mb-3">
+                                                <label class="label-form">Email address</label>
+                                                <input type="text" name="admin_email" id="admin_email" class="form-control" value="<?= $row['admin_email'] ?>">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="label-form">Password</label>
+                                                <input type="text" name="admin_password" id="admin_password" class="form-control" value="<?= $row['admin_password'] ?>">
+                                            </div>
+                                            <div class=" mt-4 mb-0">
+                                                <input type="submit" name="edit_admin" class="btn btn-primary" value="Edit"">
+                                            </div>
+                                        </form>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
@@ -140,7 +137,7 @@ if (isset($_POST['check_admin']))
                         </div>
                     </div>
 
-                <?php
+                    <?php
                 }
                 else {
                     $message1 .= "<li>Wrong Password</li>";
@@ -154,31 +151,28 @@ if (isset($_POST['check_admin']))
 }
 ?>
 
-    <?php if (!isset($_POST['check_admin'])): ?>
+<?php if (!isset($_POST['check_admin'])): ?>
 
     <div class="container-fluid px-4">
         <?php
-        if ($error != '')
-        {
+        if ($error != '') {
             echo "<div class='container-fluid pt-4'>
-                    <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                    <div class='alert alert-danger alert-dismissible' role='alert'>
                         <ul class='list-unstyled'>$error</ul>
                         <button type='button' class='btn btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                     </div>
                 </div>";
         }
-
-        if ($message != '')
-        {
+        if ($message != '') {
             echo "<div class='container-fluid pt-4'>
-                    <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                    <div class='alert alert-success alert-dismissible' role='alert'>
                         <ul class='list-unstyled'>$message</ul>
                         <button type='button' class='btn btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                     </div>
                 </div>";
         }
         ?>
-        <h1 class="mt-4">Profile</h1>
+        <h1 class="mt-4">Confirm Your Profile Details</h1>
         <ol class="breadcrumb mt-4 mb-4 bg-light p-2 border rounded">
             <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
             <li class="breadcrumb-item active"><a href="profile.php">Profile</a></li>
@@ -200,7 +194,7 @@ if (isset($_POST['check_admin']))
                                 <input type="text" name="admin_password_check" id="admin_password_check" class="form-control">
                             </div>
                             <div class=" mt-4 mb-0">
-                                <input type="submit" name="check_admin" class="btn btn-primary" value="Confirm">
+                                <input type="submit" name="check_admin" class="btn btn-primary" value="Confirm"">
                             </div>
                         </form>
                     </div>
@@ -209,40 +203,25 @@ if (isset($_POST['check_admin']))
         </div>
     </div>
 
-    <?php elseif($message1 != ''): ?>
+<?php elseif ($message1 != ''): ?>
 
-        <div class="container-fluid pt-3">
-            <div class='alert alert-danger alert-dismissible' role='alert'>
-                <ul class='list-unstyled'><?=$message1?></ul>
-                <button type='button' class='btn btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-            </div>
-        </div>
-
-        <div class="container-fluid px-4">
-        <?php
-        if ($error != '')
-        {
-            echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                            <ul class='list-unstyled'>$error</ul>
-                            <button type='button' class='btn btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                        </div>";
-        }
-
-        if ($message != '')
-        {
-            echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
-                            <ul class='list-unstyled'>$message</ul>
-                            <button type='button' class='btn btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                        </div>";
-        }
-        ?>
-        <h1 class="mt-4">Profile</h1>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Confirm Your Profile Details</h1>
         <ol class="breadcrumb mt-4 mb-4 bg-light p-2 border rounded">
             <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
             <li class="breadcrumb-item active"><a href="profile.php">Profile</a></li>
         </ol>
         <div class="row">
             <div class="col-md-6">
+                <?php
+                if ($message1 != '')
+                {
+                    echo "<div class='alert alert-danger alert-dismissible'>
+                            <ul class='list-unstyled'>$message1</ul>
+                            <button class='btn btn-close' type='button' data-bs-dismiss='alert' aria-label='Close'></button>
+                        </div>";
+                }
+                ?>
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fa fa-user-edit"></i> Confirm your profile details
@@ -258,7 +237,7 @@ if (isset($_POST['check_admin']))
                                 <input type="text" name="admin_password_check" id="admin_password_check" class="form-control">
                             </div>
                             <div class=" mt-4 mb-0">
-                                <input type="submit" name="check_admin" class="btn btn-primary" value="Confirm">
+                                <input type="submit" name="check_admin" class="btn btn-primary" value="Confirm"">
                             </div>
                         </form>
                     </div>
@@ -267,8 +246,6 @@ if (isset($_POST['check_admin']))
         </div>
     </div>
 
-    <?php endif; ?>
+<?php endif; ?>
 
-<?php
-include "../footer.php";
-?>
+<?php include "../footer.php"; ?>

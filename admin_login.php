@@ -1,12 +1,15 @@
 <?php
-include "database_connection.php";
+// admin_login.php
 
-global $connect;
+include 'database_connection.php';
+include 'header.php';
+
 $message = '';
 
 if (isset($_POST['login_button']))
 {
-    $formData = array();
+    $formdata = array();
+
     if (empty($_POST['admin_email']))
     {
         $message .= "<li>Email Address is required</li>";
@@ -14,10 +17,10 @@ if (isset($_POST['login_button']))
     else {
         if (!filter_var($_POST['admin_email'], FILTER_VALIDATE_EMAIL))
         {
-            $message .= "<li>Invalid Email Address</li>";
+            $message .= "<li>Invalid Email Address.</li>";
         }
         else {
-            $formData['admin_email'] = $_POST['admin_email'];
+            $formdata['admin_email'] = $_POST['admin_email'];
         }
     }
 
@@ -26,38 +29,41 @@ if (isset($_POST['login_button']))
         $message .= "<li>Password is required</li>";
     }
     else {
-        $formData['admin_password'] = $_POST['admin_password'];
+        $formdata['admin_password'] = $_POST['admin_password'];
     }
 
     if ($message == '')
     {
         $data = array(
-            ':admin_email' => $formData['admin_email']
+            ":admin_email" => $formdata['admin_email']
         );
+
         $query = "SELECT * FROM lms_admin WHERE admin_email = :admin_email";
+
         $statement = $connect->prepare($query);
+
         $statement->execute($data);
 
         if ($statement->rowCount() > 0)
         {
             foreach ($statement->fetchAll() as $row)
             {
-                if ($row['admin_password'] == $formData['admin_password'])
+                if ($row['admin_password'] == $formdata['admin_password'])
                 {
                     $_SESSION['admin_id'] = $row['admin_id'];
-                    header('Location: admin/index.php');
+
+                    header('location: admin/index.php');
                 }
                 else {
-                    $message .= "<li>Wrong Password</li>";
+                    $message = "<li>Wrong password</li>";
                 }
             }
         }
         else {
-            $message .= "<li>Wrong Email Address";
+            $message = "<li>Wrong Email address</li>";
         }
     }
 }
-include "header.php";
 ?>
 
 <div class="d-flex align-items-center justify-content-center" style="min-height: 700px;">
@@ -65,7 +71,7 @@ include "header.php";
         <?php
             if ($message != '')
             {
-                echo "<div class='alert alert-danger'>$message</div>";
+                echo "<div class='alert alert-danger'><ul>$message</ul></div>";
             }
         ?>
         <div class="card">
@@ -90,3 +96,7 @@ include "header.php";
         </div>
     </div>
 </div>
+
+<?php
+include 'footer.php';
+?>
